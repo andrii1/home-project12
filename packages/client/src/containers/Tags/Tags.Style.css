@@ -1,0 +1,23 @@
+.container-apps-sort {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.apps-sort-underline {
+  text-decoration: underline !important;
+}
+
+.container-cards-tags {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 992px) {
+  .container-cards-tags {
+    margin: 2rem auto;
+    gap: 1rem;
+    width: 90%;
+  }
+}

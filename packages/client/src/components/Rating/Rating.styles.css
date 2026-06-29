@@ -1,0 +1,33 @@
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  font-size: 18px;
+  color: #ddd;
+}
+
+.star.full {
+  color: #f5a623;
+}
+
+.star.half {
+  background: linear-gradient(90deg, #f5a623 50%, #ddd 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rating-value {
+  font-weight: 600;
+}
+
+.reviews {
+  color: #666;
+  font-size: 14px;
+}
