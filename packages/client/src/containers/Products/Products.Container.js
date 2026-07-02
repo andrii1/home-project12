@@ -64,12 +64,8 @@ export const Products = () => {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [filteredTags, setFilteredTags] = useState([]);
   const [filteredHighlights, setFilteredHighlights] = useState([]);
-  const [filteredUserTypes, setFilteredUserTypes] = useState([]);
-  const [filteredOccasions, setFilteredOccasions] = useState([]);
   const [filteredUseCases, setFilteredUseCases] = useState([]);
-  const [filteredCountries, setFilteredCountries] = useState([]);
-  const [filteredAreas, setFilteredAreas] = useState([]);
-  const [filteredCities, setFilteredCities] = useState([]);
+
   const [filteredPricing, setFilteredPricing] = useState([]);
   const [filteredPlatforms, setFilteredPlatforms] = useState([]);
   const [filteredSocials, setFilteredSocials] = useState([]);
@@ -126,11 +122,6 @@ export const Products = () => {
     setFilteredCategories(filters.categories || []);
     setFilteredTags(filters.tags || []);
     setFilteredHighlights(filters.highlights || []);
-    setFilteredCountries(filters.countries || []);
-    setFilteredAreas(filters.areas || []);
-    setFilteredCities(filters.cities || []);
-    setFilteredUserTypes(filters.userTypes || []);
-    setFilteredOccasions(filters.occasions || []);
     setFilteredUseCases(filters.useCases || []);
     setFilteredPricing(filters.pricing || []);
     setFilteredPlatforms(filters.platforms || []);
@@ -156,21 +147,6 @@ export const Products = () => {
       params.append('categories', filteredCategories.join(','));
     }
 
-    // Countries
-    if (filteredCountries.length > 0) {
-      params.append('countries', filteredCountries.join(','));
-    }
-
-    // Areas
-    if (filteredAreas.length > 0) {
-      params.append('areas', filteredAreas.join(','));
-    }
-
-    // Cities
-    if (filteredCities.length > 0) {
-      params.append('cities', filteredCities.join(','));
-    }
-
     // Tags
     if (filteredTags.length > 0) {
       params.append('tags', filteredTags.join(','));
@@ -179,16 +155,6 @@ export const Products = () => {
     // Highlights
     if (filteredHighlights.length > 0) {
       params.append('highlights', filteredHighlights.join(','));
-    }
-
-    // User types
-    if (filteredUserTypes.length > 0) {
-      params.append('userTypes', filteredUserTypes.join(','));
-    }
-
-    // Occasions
-    if (filteredOccasions.length > 0) {
-      params.append('occasions', filteredOccasions.join(','));
     }
 
     // useCases
@@ -253,15 +219,10 @@ export const Products = () => {
     filteredSocials,
     filteredOther,
     filteredHighlights,
-    filteredUserTypes,
-    filteredOccasions,
     filteredUseCases,
     searchParams,
     filteredSearch,
     filtersReady,
-    filteredCountries,
-    filteredAreas,
-    filteredCities,
   ]);
 
   const fetchApps = async () => {
@@ -280,21 +241,6 @@ export const Products = () => {
       params.append('categories', filteredCategories.join(','));
     }
 
-    // Countries
-    if (filteredCountries.length > 0) {
-      params.append('countries', filteredCountries.join(','));
-    }
-
-    // Areas
-    if (filteredAreas.length > 0) {
-      params.append('areas', filteredAreas.join(','));
-    }
-
-    // Cities
-    if (filteredCities.length > 0) {
-      params.append('cities', filteredCities.join(','));
-    }
-
     // Tags
     if (filteredTags.length > 0) {
       params.append('tags', filteredTags.join(','));
@@ -303,16 +249,6 @@ export const Products = () => {
     // Highlights
     if (filteredHighlights.length > 0) {
       params.append('highlights', filteredHighlights.join(','));
-    }
-
-    // User types
-    if (filteredUserTypes.length > 0) {
-      params.append('userTypes', filteredUserTypes.join(','));
-    }
-
-    // Business models
-    if (filteredOccasions.length > 0) {
-      params.append('occasions', filteredOccasions.join(','));
     }
 
     // useCases
@@ -436,27 +372,6 @@ export const Products = () => {
       setCategories(sorted);
     }
 
-    async function fetchCountries() {
-      const response = await fetch(`${apiURL()}/countries/`);
-      const data = await response.json();
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-      setCountries(sorted);
-    }
-
-    async function fetchAreas() {
-      const response = await fetch(`${apiURL()}/areas/`);
-      const data = await response.json();
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-      setAreas(sorted);
-    }
-
-    async function fetchCities() {
-      const response = await fetch(`${apiURL()}/cities/`);
-      const data = await response.json();
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-      setCities(sorted);
-    }
-
     async function fetchTags() {
       const response = await fetch(`${apiURL()}/tags/`);
       const data = await response.json();
@@ -471,20 +386,6 @@ export const Products = () => {
       setHighlights(sorted);
     }
 
-    async function fetchUserTypes() {
-      const response = await fetch(`${apiURL()}/userTypes/`);
-      const data = await response.json();
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-      setUserTypes(sorted);
-    }
-
-    async function fetchOccasions() {
-      const response = await fetch(`${apiURL()}/occasions/`);
-      const data = await response.json();
-      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
-      setOccasions(sorted);
-    }
-
     async function fetchUseCases() {
       const response = await fetch(`${apiURL()}/useCases/`);
       const data = await response.json();
@@ -493,13 +394,8 @@ export const Products = () => {
     }
 
     fetchCategories();
-    fetchCountries();
-    fetchAreas();
-    fetchCities();
     fetchTags();
     fetchHighlights();
-    fetchUserTypes();
-    fetchOccasions();
     fetchUseCases();
   }, []);
 
@@ -641,13 +537,8 @@ export const Products = () => {
   const clearFiltersHandler = () => {
     // Reset all filter states
     setFilteredCategories([]);
-    setFilteredCountries([]);
-    setFilteredAreas([]);
-    setFilteredCities([]);
     setFilteredTags([]);
     setFilteredHighlights([]);
-    setFilteredUserTypes([]);
-    setFilteredOccasions([]);
     setFilteredUseCases([]);
     setFilteredPricing([]);
     setFilteredPlatforms([]);
@@ -913,13 +804,8 @@ export const Products = () => {
 
   const hasActiveFilters =
     filteredCategories.length > 0 ||
-    filteredCountries.length > 0 ||
-    filteredAreas.length > 0 ||
-    filteredCities.length > 0 ||
     filteredTags.length > 0 ||
     filteredHighlights.length > 0 ||
-    filteredUserTypes.length > 0 ||
-    filteredOccasions.length > 0 ||
     filteredUseCases.length > 0 ||
     filteredPricing.length > 0 ||
     filteredPlatforms.length > 0 ||
@@ -935,27 +821,7 @@ export const Products = () => {
       setter: setFilteredCategories,
       options: categories,
     },
-    {
-      key: 'countries',
-      label: 'Countries',
-      values: filteredCountries,
-      setter: setFilteredCountries,
-      options: countries,
-    },
-    {
-      key: 'areas',
-      label: 'Areas',
-      values: filteredAreas,
-      setter: setFilteredAreas,
-      options: areas,
-    },
-    {
-      key: 'cities',
-      label: 'Cities',
-      values: filteredCities,
-      setter: setFilteredCities,
-      options: cities,
-    },
+
     {
       key: 'tags',
       label: 'Tags',
@@ -970,20 +836,7 @@ export const Products = () => {
       setter: setFilteredHighlights,
       options: highlights,
     },
-    {
-      key: 'userTypes',
-      label: 'User Types',
-      values: filteredUserTypes,
-      setter: setFilteredUserTypes,
-      options: userTypes,
-    },
-    {
-      key: 'occasions',
-      label: 'Business Models',
-      values: filteredOccasions,
-      setter: setFilteredOccasions,
-      options: occasions,
-    },
+
     {
       key: 'useCases',
       label: 'Use Cases',
@@ -1218,42 +1071,6 @@ export const Products = () => {
         <div className="container-details filters">
           <div className="container-form">
             <div className="selector-group">
-              <h3>Countries</h3>
-              <MultiSelectDropdown
-                options={countries}
-                selected={filteredCountries}
-                onChange={filterHandler}
-                placeholder="Select countries"
-                valueKey="slug"
-                labelKey="title"
-                title="countries"
-              />
-            </div>
-            <div className="selector-group">
-              <h3>Areas</h3>
-              <MultiSelectDropdown
-                options={areas}
-                selected={filteredAreas}
-                onChange={filterHandler}
-                placeholder="Select areas"
-                valueKey="slug"
-                labelKey="title"
-                title="areas"
-              />
-            </div>
-            <div className="selector-group">
-              <h3>Cities</h3>
-              <MultiSelectDropdown
-                options={cities}
-                selected={filteredCities}
-                onChange={filterHandler}
-                placeholder="Select cities"
-                valueKey="slug"
-                labelKey="title"
-                title="cities"
-              />
-            </div>
-            <div className="selector-group">
               <h3>Highlights</h3>
               <MultiSelectDropdown
                 options={highlights}
@@ -1263,30 +1080,6 @@ export const Products = () => {
                 valueKey="slug"
                 labelKey="title"
                 title="highlights"
-              />
-            </div>
-            <div className="selector-group">
-              <h3>User types</h3>
-              <MultiSelectDropdown
-                options={userTypes}
-                selected={filteredUserTypes}
-                onChange={filterHandler}
-                placeholder="Select user types"
-                valueKey="slug"
-                labelKey="title"
-                title="userTypes"
-              />
-            </div>
-            <div className="selector-group">
-              <h3>Occasions</h3>
-              <MultiSelectDropdown
-                options={occasions}
-                selected={filteredOccasions}
-                onChange={filterHandler}
-                placeholder="Select occasions"
-                valueKey="slug"
-                labelKey="title"
-                title="occasions"
               />
             </div>
             <div className="selector-group">

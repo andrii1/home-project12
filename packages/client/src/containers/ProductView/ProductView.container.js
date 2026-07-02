@@ -128,10 +128,8 @@ export const ProductView = () => {
   const [openAddCodeForm, setOpenAddCodeForm] = useState(false);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [tags, setTags] = useState([]);
-  const [occasions, setOccasions] = useState([]);
   const [highlights, setHighlights] = useState([]);
   const [useCases, setUseCases] = useState([]);
-  const [userTypes, setUserTypes] = useState([]);
   // const {
   //   likes: positiveLikes,
   //   allLikes: allPositiveLikes,
@@ -166,14 +164,6 @@ export const ProductView = () => {
       setTags(data);
     }
 
-    async function fetchOccasionsForProduct(productId) {
-      const response = await fetch(
-        `${apiURL()}/occasions/?product=${productId}`,
-      );
-      const data = await response.json();
-      setOccasions(data);
-    }
-
     async function fetchHighlightsForProduct(productId) {
       const response = await fetch(
         `${apiURL()}/highlights/?product=${productId}`,
@@ -188,14 +178,6 @@ export const ProductView = () => {
       );
       const data = await response.json();
       setUseCases(data);
-    }
-
-    async function fetchUserTypesForProduct(productId) {
-      const response = await fetch(
-        `${apiURL()}/userTypes/?product=${productId}`,
-      );
-      const data = await response.json();
-      setUserTypes(data);
     }
 
     // async function fetchCodesForADeal(dealId) {
@@ -226,11 +208,11 @@ export const ProductView = () => {
       setError(null); // Clear previous errors
       try {
         await fetchTagsForProduct(id);
-        await fetchOccasionsForProduct(id);
+
         await fetchHighlightsForProduct(id);
 
         await fetchUseCasesForProduct(id);
-        await fetchUserTypesForProduct(id);
+
         // await fetchCodesForADeal(id);
         // await fetchSearchesForADeal(id);
         // await fetchKeywordsForADeal(id);
@@ -1722,47 +1704,6 @@ export const ProductView = () => {
                   <div className="badges-keywords">
                     {useCases.map((tag) => (
                       <Link to={`../products/useCases/${tag.slug}`}>
-                        <Button
-                          secondary
-                          label={tag.title.toLowerCase()}
-                          size="small"
-                        />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="container-details container-badges">
-            <h2 className="no-margin">For who and when</h2>
-
-            {userTypes.length > 0 && (
-              <div className="container-tags">
-                <div className="badges">
-                  <p className="p-no-margin">Best for: </p>
-                  <div className="badges-keywords">
-                    {userTypes.map((tag) => (
-                      <Link to={`../products/userTypes/${tag.slug}`}>
-                        <Button
-                          secondary
-                          label={tag.title.toLowerCase()}
-                          size="small"
-                        />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {occasions.length > 0 && (
-              <div className="container-tags">
-                <div className="badges">
-                  <p className="p-no-margin">Occasions: </p>
-                  <div className="badges-keywords">
-                    {occasions.map((tag) => (
-                      <Link to={`../products/occasions/${tag.slug}`}>
                         <Button
                           secondary
                           label={tag.title.toLowerCase()}
