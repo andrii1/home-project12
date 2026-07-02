@@ -2,7 +2,7 @@
 /* eslint-disable no-await-in-loop */
 require('dotenv').config();
 
-const insertProducts = require('./insertProductsTiqets'); // your DB insert function
+const insertProducts = require('./insertProducts'); // your DB insert function
 
 const apiKey = process.env.TIQETS_API_KEY;
 const pageSize = 10;

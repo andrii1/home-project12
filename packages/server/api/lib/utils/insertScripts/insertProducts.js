@@ -98,84 +98,6 @@ async function insertCategory(title) {
   return data; // assume it returns { id, full_name }
 }
 
-async function insertCountry(title) {
-  const res = await fetch(`${API_PATH}/countries`, {
-    method: 'POST',
-    headers: {
-      token: `token ${USER_UID}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title }),
-  });
-  const data = await res.json();
-  return data; // assume it returns { id, full_name }
-}
-
-async function insertArea(title, countryId) {
-  const res = await fetch(`${API_PATH}/areas`, {
-    method: 'POST',
-    headers: {
-      token: `token ${USER_UID}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title, country_id: countryId }),
-  });
-  const data = await res.json();
-  return data; // assume it returns { id, full_name }
-}
-
-async function insertCity(title, areaId, countryId) {
-  const res = await fetch(`${API_PATH}/cities`, {
-    method: 'POST',
-    headers: {
-      token: `token ${USER_UID}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ title, area_id: areaId, country_id: countryId }),
-  });
-  const data = await res.json();
-  return data; // assume it returns { id, full_name }
-}
-
-// async function insertProduct({
-//   title,
-//   external_id,
-//   rating,
-//   price,
-//   reviews,
-//   url,
-//   url_affiliate,
-//   discount_percentage,
-//   categoryId,
-//   cityId,
-//   platformId,
-// }) {
-//   const body = {
-//     title,
-//     external_id,
-//     rating,
-//     price,
-//     reviews,
-//     url,
-//     url_affiliate,
-//     discount_percentage,
-//     category_id: categoryId,
-//     city_id: cityId,
-//     platform_id: platformId,
-//   };
-
-//   const res = await fetch(`${API_PATH}/products/node`, {
-//     method: 'POST',
-//     headers: {
-//       token: `token ${USER_UID}`,
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(body),
-//   });
-//   const data = await res.json();
-//   return data; // assume it returns { id, full_name }
-// }
-
 async function insertProduct(product) {
   const res = await fetch(`${API_PATH}/products/node`, {
     method: 'POST',
@@ -205,10 +127,6 @@ const insertProducts = async (products) => {
       const platform = 'Tiqets';
       const platformUrl = 'http://tiqets.com/';
 
-      const country = product.country_name;
-      let area;
-      // const area = product['Area/State']?.trim() || null;
-      const city = product.city_name;
       const cleanUrl = product.product_url.split('?')[0];
 
       const rating = product.ratings?.average || null;
@@ -230,22 +148,6 @@ const insertProducts = async (products) => {
       const { categoryId } = newCategory;
       console.log('Inserted category:', newCategory);
 
-      const newCountry = await insertCountry(country);
-      const { countryId } = newCountry;
-      console.log('Inserted country:', newCountry);
-
-      let areaId = null;
-
-      if (area) {
-        const newArea = await insertArea(area, countryId);
-        areaId = newArea.areaId;
-        console.log('Inserted area:', newArea);
-      }
-
-      const newCity = await insertCity(city, areaId, countryId);
-      const { cityId } = newCity;
-      console.log('Inserted city:', newCity);
-
       const newProduct = await insertProduct({
         title: product.title,
         external_id: product.id,
@@ -259,7 +161,6 @@ const insertProducts = async (products) => {
         url_affiliate: product.product_url,
         discount_percentage: product.discount_percentage,
         category_id: categoryId,
-        city_id: cityId,
         platform_id: platformId,
         address: product.address,
         postal_code: product.postal_code,
