@@ -823,7 +823,7 @@ export const ProductView = () => {
     sku: product.id,
     brand: {
       '@type': 'Brand',
-      name: 'Book Travel Activities',
+      name: 'Catch Top Deals',
     },
     offers: {
       '@type': 'Offer',
@@ -899,7 +899,7 @@ export const ProductView = () => {
   return (
     <>
       <Helmet>
-        <title>{`${product?.title} - Book Travel Activities`}</title>
+        <title>{`${product?.title} - Catch Top Deals`}</title>
         <meta
           name="description"
           content={
@@ -927,7 +927,7 @@ export const ProductView = () => {
           property="og:url"
           content={`https://www.booktravelactivities.com/products/${product.slug}`}
         />
-        <meta property="og:site_name" content="Book Travel Activities" />
+        <meta property="og:site_name" content="Catch Top Deals" />
 
         {/* Twitter Cards */}
         <meta name="twitter:card" content="summary_large_image" />
@@ -1840,19 +1840,19 @@ export const ProductView = () => {
           )}
           {similarProductsCity.length > 0 && (
             <div className="container-alternatives">
-              <h2>🔎 Activities in {product.cityTitle}</h2>
+              <h2>🔎 Deals in {product.cityTitle}</h2>
               <div className="container-cards small-cards">{cardItemsCity}</div>
             </div>
           )}
           {similarProductsArea.length > 0 && (
             <div className="container-alternatives">
-              <h2>🔎 Activities in {product.areaTitle}</h2>
+              <h2>🔎 Deals in {product.areaTitle}</h2>
               <div className="container-cards small-cards">{cardItemsArea}</div>
             </div>
           )}
           {similarProductsCountry.length > 0 && (
             <div className="container-alternatives">
-              <h2>🔎 Activities in {product.countryTitle}</h2>
+              <h2>🔎 Deals in {product.countryTitle}</h2>
               <div className="container-cards small-cards">
                 {cardItemsCountry}
               </div>

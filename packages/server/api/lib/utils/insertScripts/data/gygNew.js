@@ -5914,8 +5914,7 @@ const products = [
   },
   {
     'Tour ID': '1198053',
-    'Tour Title':
-      'Kyoto: Hidden Gems E-Bike Tour with Local Guide & Activities',
+    'Tour Title': 'Kyoto: Hidden Gems E-Bike Tour with Local Guide & Deals',
     'Category Name': 'Adventure Tours',
     City: 'Kyoto',
     'Area/State': 'Kyoto Prefecture',
@@ -9035,7 +9034,7 @@ const products = [
   },
   {
     'Tour ID': '1167375',
-    'Tour Title': 'Rovaniemi Winter Activities & Northern Lights!',
+    'Tour Title': 'Rovaniemi Winter Deals & Northern Lights!',
     'Category Name': 'Adventure Tours',
     City: 'Rovaniemi',
     'Area/State': 'Lapland',
@@ -11406,8 +11405,7 @@ const products = [
   },
   {
     'Tour ID': '1178813',
-    'Tour Title':
-      'Ha Long: Luxury Daytime Sightseeing Cruise And Do Activities',
+    'Tour Title': 'Ha Long: Luxury Daytime Sightseeing Cruise And Do Deals',
     'Category Name': 'Adventure Tours',
     City: 'Ha Long',
     'Area/State': 'Quang Ninh Province',
@@ -13228,6 +13226,5 @@ const products = [
     Reviews: '6',
   },
 ];
-
 
 module.exports = products;

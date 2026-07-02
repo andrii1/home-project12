@@ -7685,7 +7685,7 @@ const products = [
   },
   {
     'Tour ID': '140781',
-    'Tour Title': 'From Pattaya/Bangkok: Island Day Trip with Beach Activities',
+    'Tour Title': 'From Pattaya/Bangkok: Island Day Trip with Beach Deals',
     'Category Name': 'Day Trips',
     City: 'Bangkok',
     'Area/State': 'Central Thailand',

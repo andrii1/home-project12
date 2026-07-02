@@ -55,15 +55,15 @@ export const getPageMeta = ({ filterConfig }) => {
     const capitalizedLong = capitalizeFirstWord(allTitles.join(', '));
 
     return {
-      pageMetaTitle: `${capitalizedLong} activities - Book Travel Activities`,
-      pageMetaDescription: `${capitalizedLong} activities - deals, reviews, promos.`,
-      pageHeaderTitle: `${capitalizedShort} activities`,
+      pageMetaTitle: `${capitalizedLong} products - Catch Top Deals`,
+      pageMetaDescription: `${capitalizedLong} products - deals, reviews, promos.`,
+      pageHeaderTitle: `${capitalizedShort} products`,
     };
   }
 
   return {
-    pageMetaTitle: 'Book Travel Activities - find best activities',
+    pageMetaTitle: 'Catch Top Deals - find best products',
     pageMetaDescription: 'Reviews, deals, promos.',
-    pageHeaderTitle: 'Find best activities',
+    pageHeaderTitle: 'Find best products',
   };
 };

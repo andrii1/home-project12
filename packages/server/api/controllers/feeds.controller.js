@@ -18,7 +18,7 @@ const getFile = async () => {
 
     const channel = root.ele('channel');
 
-    channel.ele('title').txt('Book Travel Activities');
+    channel.ele('title').txt('Catch Top Deals');
     channel.ele('link').txt('https://www.booktravelactivities.com');
     channel.ele('description').txt('Tours and activities');
 
@@ -40,7 +40,7 @@ const getFile = async () => {
       item.ele('g:price').txt(`${p.price} ${p.currency}`);
 
       item.ele('g:condition').txt('new');
-      item.ele('g:brand').txt('Book Travel Activities');
+      item.ele('g:brand').txt('Catch Top Deals');
       item.ele('g:identifier_exists').txt('no');
 
       // ✅ Optional reviews
