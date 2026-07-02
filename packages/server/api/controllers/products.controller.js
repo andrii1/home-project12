@@ -201,9 +201,6 @@ const getProductsBy = async (params) => {
     column = 'id',
     direction = 'asc',
     categories,
-    cities,
-    areas,
-    countries,
     pricing,
     platforms,
     socials,
@@ -211,8 +208,6 @@ const getProductsBy = async (params) => {
     search,
     tags,
     highlights,
-    userTypes,
-    occasions,
     useCases,
   } = params;
 
@@ -278,13 +273,6 @@ const getProductsBy = async (params) => {
           'categories.slug as categorySlug',
           'platforms.title as platformTitle',
           'platforms.slug as platformSlug',
-          'cities.title as cityTitle',
-          'cities.slug as citySlug',
-          'areas.title as areaTitle',
-          'areas.slug as areaSlug',
-          'countries.title as countryTitle',
-          'countries.slug as countrySlug',
-          'countries.iso_code as countryIsoCode',
           knex.raw(`(
         SELECT COUNT(*)
         FROM favorites
@@ -299,15 +287,9 @@ const getProductsBy = async (params) => {
         )
         .leftJoin('categories', 'products.category_id', 'categories.id')
         .leftJoin('platforms', 'products.platform_id', 'platforms.id')
-        .leftJoin('cities', 'products.city_id', 'cities.id')
-        .leftJoin('areas', 'cities.area_id', 'areas.id')
-        .leftJoin('countries', 'cities.country_id', 'countries.id')
         .modify((qb) => {
           // --- Simple filters ---
           if (categories) qb.whereIn('categories.slug', categories.split(','));
-          if (cities) qb.whereIn('cities.slug', cities.split(','));
-          if (areas) qb.whereIn('areas.slug', areas.split(','));
-          if (countries) qb.whereIn('countries.slug', countries.split(','));
           applyMappedFilter(qb, pricing, pricingFiltersMap);
           applyMappedFilter(qb, platforms, platformsFiltersMap);
           applyMappedFilter(qb, socials, socialMediaFiltersMap);
@@ -329,8 +311,6 @@ const getProductsBy = async (params) => {
           const manyToMany = {
             tags,
             highlights,
-            userTypes,
-            occasions,
             useCases,
           };
           for (const key in manyToMany) {
@@ -387,18 +367,8 @@ const getProductById = async (id) => {
         'products.*',
         'categories.title as categoryTitle',
         'categories.slug as categorySlug',
-        'cities.title as cityTitle',
-        'cities.slug as citySlug',
-        'areas.title as areaTitle',
-        'areas.slug as areaSlug',
-        'countries.title as countryTitle',
-        'countries.slug as countrySlug',
-        'countries.iso_code as countryIsoCode',
       )
       .join('categories', 'products.category_id', '=', 'categories.id')
-      .leftJoin('cities', 'products.city_id', 'cities.id')
-      .leftJoin('areas', 'cities.area_id', 'areas.id')
-      .leftJoin('countries', 'cities.country_id', 'countries.id')
       .where({ 'products.slug': id });
     if (product.length === 0) {
       throw new HttpError(`incorrect entry with the id of ${id}`, 404);
@@ -656,10 +626,9 @@ const createProductNode = async (token, body) => {
     // === Prompt builder ===
     const buildPrompt = (type, title, url, descriptionParam, quantity) => {
       const examples = {
-        highlights: 'E.g. Skip the line, Small group, Guided, Private tour',
-        userTypes: 'E.g. Individuals, Teams, Students',
-        occasions: 'E.g. Birthday, Honeymoon, School trip, Corporate event',
-        useCases: 'E.g. Photography, Food & Wine, History, Nature',
+        highlights:
+          'E.g. Durable waterproof design, multi-device compatibility',
+        useCases: 'E.g. Efficient power delivery, organized device management',
       };
 
       let base = `for this product: \"${title}\"`;
@@ -678,14 +647,6 @@ const createProductNode = async (token, body) => {
       buildPrompt('highlights', body.title, body.url, description, '5'),
       'highlights',
     );
-    const userTypesIds = await createItems(
-      buildPrompt('userTypes', body.title, body.url, description, '5'),
-      'userTypes',
-    );
-    const occasionsIds = await createItems(
-      buildPrompt('occasions', body.title, body.url, description, '5'),
-      'occasions',
-    );
     const useCasesIds = await createItems(
       buildPrompt('useCases', body.title, body.url, description, '5'),
       'useCases',
@@ -700,8 +661,6 @@ const createProductNode = async (token, body) => {
       );
     await insertRelations('tagsProducts', 'tag_id', tagIds);
     await insertRelations('highlightsProducts', 'highlight_id', highlightsIds);
-    await insertRelations('userTypesProducts', 'userType_id', userTypesIds);
-    await insertRelations('occasionsProducts', 'occasion_id', occasionsIds);
     await insertRelations('useCasesProducts', 'useCase_id', useCasesIds);
 
     return {
