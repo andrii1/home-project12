@@ -10,9 +10,6 @@ exports.up = function (knex) {
 
     table.time('duration');
 
-    table.boolean('wheelchair_access');
-    table.boolean('smartphone_ticket');
-
     table.decimal('geolocation_lat', 10, 7);
     table.decimal('geolocation_lng', 10, 7);
 
