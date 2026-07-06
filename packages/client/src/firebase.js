@@ -20,12 +20,12 @@ import {
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_KEY,
-  authDomain: 'activities-e092d.firebaseapp.com',
-  projectId: 'activities-e092d',
-  storageBucket: 'activities-e092d.firebasestorage.app',
-  messagingSenderId: '614629777084',
-  appId: '1:614629777084:web:36567ca65ce46011113ab9',
-  measurementId: 'G-DWTSLT4L1W',
+  authDomain: 'catch-top-deals.firebaseapp.com',
+  projectId: 'catch-top-deals',
+  storageBucket: 'catch-top-deals.firebasestorage.app',
+  messagingSenderId: '445926425829',
+  appId: '1:445926425829:web:5369617d49edb30d9b000c',
+  measurementId: 'G-2J7PLP2EW1',
 };
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
