@@ -2,6 +2,7 @@ const { chromium } = require('playwright');
 
 async function scrapeTemuXHR(url) {
   const browser = await chromium.launch({ headless: true });
+
   const page = await browser.newPage({
     locale: 'en-US',
   });
@@ -15,26 +16,41 @@ async function scrapeTemuXHR(url) {
   // 🎯 Intercept API responses
   page.on('response', async (response) => {
     try {
+      // console.log(response.url());
       const url = response.url();
 
-      // Temu product APIs usually contain keywords like:
-      if (
-        url.includes('api') ||
-        url.includes('goods') ||
-        url.includes('product') ||
-        url.includes('search') ||
-        url.includes('recommend')
-      ) {
-        const json = await response.json().catch(() => null);
-
-        if (!json) return;
-
-        extractProducts(json, products);
+      if (url.includes('/api/')) {
+        console.log(url);
       }
+      // Temu product APIs usually contain keywords like:
+      // if (
+      //   url.includes('api') ||
+      //   url.includes('goods') ||
+      //   url.includes('product') ||
+      //   url.includes('search') ||
+      //   url.includes('recommend')
+      // ) {
+      //   // console.log(url);
+      //   const json = await response.json().catch(() => null);
+
+      //   if (!json) return;
+
+      //   extractProducts(json, products);
+      // }
     } catch (e) {}
   });
 
   await page.goto(url, { waitUntil: 'networkidle' });
+
+  // await page.goto(url, { waitUntil: 'domcontentloaded' });
+
+  // console.log('Final URL:', page.url());
+  // console.log('Title:', await page.title());
+
+  // await page.screenshot({
+  //   path: 'temu.png',
+  //   fullPage: true,
+  // });
 
   // scroll to trigger more XHR calls
   for (let i = 0; i < 8; i++) {
