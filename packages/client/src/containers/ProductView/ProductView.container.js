@@ -809,7 +809,7 @@ export const ProductView = () => {
     },
     offers: {
       '@type': 'Offer',
-      url: `https://www.booktravelactivities.com/products/${product.slug}`,
+      url: `https://www.catchtopdeals.com/products/${product.slug}`,
       priceCurrency: product.currency,
       price: product.price,
       priceValidUntil,
@@ -834,19 +834,19 @@ export const ProductView = () => {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://www.booktravelactivities.com',
+        item: 'https://www.catchtopdeals.com',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Products',
-        item: 'https://www.booktravelactivities.com/products',
+        item: 'https://www.catchtopdeals.com/products',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: product.title,
-        item: `https://www.booktravelactivities.com/products/${product.slug}`,
+        item: `https://www.catchtopdeals.com/products/${product.slug}`,
       },
     ],
   };
@@ -892,7 +892,7 @@ export const ProductView = () => {
         {/* Canonical URL */}
         <link
           rel="canonical"
-          href={`https://www.booktravelactivities.com/products/${product.slug}`}
+          href={`https://www.catchtopdeals.com/products/${product.slug}`}
         />
         {/* Robots meta for large image preview (Google Discover) */}
         <meta name="robots" content="max-image-preview:large" />
@@ -907,7 +907,7 @@ export const ProductView = () => {
         <meta property="og:image" content={product.url_image} />
         <meta
           property="og:url"
-          content={`https://www.booktravelactivities.com/products/${product.slug}`}
+          content={`https://www.catchtopdeals.com/products/${product.slug}`}
         />
         <meta property="og:site_name" content="Catch Top Deals" />
 
@@ -1750,7 +1750,7 @@ export const ProductView = () => {
               className="button-copy"
               onClick={() =>
                 copyToClipboard(
-                  `https://www.booktravelactivities.com/products/${product.slug}`,
+                  `https://www.catchtopdeals.com/products/${product.slug}`,
                 )
               }
             />
@@ -1758,21 +1758,21 @@ export const ProductView = () => {
               <FontAwesomeIcon className="share-icon" icon={faFacebookF} />
             </FacebookShareButton>
             <TwitterShareButton
-              url={`https://www.booktravelactivities.com/products/${product.slug}`}
+              url={`https://www.catchtopdeals.com/products/${product.slug}`}
               title={`Check out this product: '${product.title}'`}
               hashtags={['Products']}
             >
               <FontAwesomeIcon className="share-icon" icon={faTwitter} />
             </TwitterShareButton>
             <LinkedinShareButton
-              url={`https://www.booktravelactivities.com/products/${product.slug}`}
+              url={`https://www.catchtopdeals.com/products/${product.slug}`}
             >
               <FontAwesomeIcon className="share-icon" icon={faLinkedinIn} />
             </LinkedinShareButton>
             <EmailShareButton
               subject="Check out this product!"
               body={`This product is great: '${product.title}'`}
-              url={`https://www.booktravelactivities.com/products/${product.slug}`}
+              url={`https://www.catchtopdeals.com/products/${product.slug}`}
             >
               <FontAwesomeIcon icon={faEnvelope} />
             </EmailShareButton>
@@ -1791,11 +1791,11 @@ export const ProductView = () => {
           )} */}
           {similarProducts.length > 0 && (
             <div className="container-alternatives">
-              <h2>🔎 Similar activities in {product.categoryTitle}</h2>
+              <h2>🔎 Similar products in {product.categoryTitle}</h2>
               <div className="container-cards small-cards">{cardItems}</div>
             </div>
           )}
-          {similarProductsCity.length > 0 && (
+          {/* {similarProductsCity.length > 0 && (
             <div className="container-alternatives">
               <h2>🔎 Deals in {product.cityTitle}</h2>
               <div className="container-cards small-cards">{cardItemsCity}</div>
@@ -1814,7 +1814,7 @@ export const ProductView = () => {
                 {cardItemsCountry}
               </div>
             </div>
-          )}
+          )} */}
           {/* {searches.length > 0 && (
             <div className="container-alternatives">
               <h2>🔎 Related searches</h2>

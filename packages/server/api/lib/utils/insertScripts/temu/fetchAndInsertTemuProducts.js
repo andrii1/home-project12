@@ -4,6 +4,16 @@ require('dotenv').config();
 
 const insertProducts = require('./insertProducts'); // your DB insert function
 
+const today = new Date();
+const todayDay = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+const allowedDays = [0, 4, 5, 6];
+
+if (!allowedDays.includes(todayDay)) {
+  console.log('Not an allowed day, skipping job.');
+  process.exit(0);
+}
+
 async function fetchProducts(date) {
   const url = `https://thunt.ai/api/rank/rank_list?rank_type=0&date=${date}`;
 
@@ -34,13 +44,16 @@ async function fetchProducts(date) {
 // console.log(products.slice(0, 5));
 
 async function fetchAndInsertAllProducts() {
-  const products = await fetchProducts('2026-07-09');
+  const date = new Date();
+  date.setDate(date.getDate() - 2);
+
+  const dateString = date.toISOString().split('T')[0];
+  console.log(dateString);
+
+  const products = await fetchProducts(dateString);
 
   // Insert into DB
-  await insertProducts(products.slice(0, 5));
-  // console.log(`Inserted ${products.length} products`);
-
-  // console.log('All products processed.');
+  await insertProducts(products);
 }
 
 // Run the script
