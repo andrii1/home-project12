@@ -1027,8 +1027,8 @@ export const ProductView = () => {
           </div>
           <div className="container-deal-actions">
             <div className="container-appview-buttons">
-              {product.url_affiliate && (
-                <Link to={product.url_affiliate} target="_blank">
+              {(product.url_affiliate || product.url) && (
+                <Link to={product.url_affiliate || product.url} target="_blank">
                   <Button
                     fourth
                     size="large"
@@ -1038,7 +1038,7 @@ export const ProductView = () => {
                         size="sm"
                       />
                     }
-                    label="Book Now"
+                    label="Get Now"
                   />
                 </Link>
               )}

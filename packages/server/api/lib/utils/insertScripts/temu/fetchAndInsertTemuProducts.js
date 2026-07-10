@@ -29,18 +29,18 @@ async function fetchProducts(date) {
   }
 }
 
-const products = await fetchProducts('2026-07-08');
+// const products = await fetchProducts('2026-07-08');
 
-console.log(products.slice(0, 5));
+// console.log(products.slice(0, 5));
 
 async function fetchAndInsertAllProducts() {
-  const products = await fetchProducts('2026-07-08');
+  const products = await fetchProducts('2026-07-09');
 
   // Insert into DB
-  await insertProducts(products);
-  console.log(`Inserted ${products.length} products`);
+  await insertProducts(products.slice(0, 5));
+  // console.log(`Inserted ${products.length} products`);
 
-  console.log('All products processed.');
+  // console.log('All products processed.');
 }
 
 // Run the script

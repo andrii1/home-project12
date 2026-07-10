@@ -3,18 +3,10 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-extraneous-dependencies */
 require('dotenv').config();
-const parseNumber = require('../parseNumber.js');
-// const productsDeals = require('./data/getYourGuideProducts.js');
-// const products2 = require('./data/gygBestsellers.js');
-// const products3 = require('./data/gygNew.js');
-// const products4 = require('./data/gygTopPerforming.js');
-
-// const products = [...products2, ...products3, ...products4];
-// const useTiqetsApi = require('./useTiqetsApi.js');
 
 // Credentials (from .env)
-const USER_UID = process.env.USER_UID_ACTIVITIES_LOCAL;
-const API_PATH = process.env.API_PATH_ACTIVITIES_LOCAL;
+const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_LOCAL;
+const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_LOCAL;
 
 const OpenAI = require('openai');
 
@@ -124,13 +116,8 @@ const insertProducts = async (products) => {
 
   for (const product of products) {
     try {
-      const platform = 'Tiqets';
-      const platformUrl = 'http://tiqets.com/';
-
-      const cleanUrl = product.product_url.split('?')[0];
-
-      const rating = product.ratings?.average || null;
-      const reviews = product.ratings?.total || 0;
+      const platform = 'Temu';
+      const platformUrl = 'http://temu.com/';
 
       const newPlatform = await insertPlatform(platform, platformUrl);
       const { platformId } = newPlatform;
@@ -144,7 +131,7 @@ const insertProducts = async (products) => {
         product.description,
       );
 
-      const newCategory = await insertCategory(createdCategory);
+      const newCategory = await insertCategory(product.category);
       const { categoryId } = newCategory;
       console.log('Inserted category:', newCategory);
 
@@ -152,42 +139,20 @@ const insertProducts = async (products) => {
         title: product.title,
         external_id: product.id,
         price: product.price,
-        currency: product.currency,
-        rating,
-        reviews,
-        summary: product.summary,
-        description: product.description,
-        url: cleanUrl,
-        url_affiliate: product.product_url,
-        discount_percentage: product.discount_percentage,
+        currency: 'USD',
+        rating: product.rating,
+        reviews: product.reviews,
+        url: product.url,
         category_id: categoryId,
         platform_id: platformId,
-        address: product.address,
-        postal_code: product.postal_code,
-        whats_included: product.whats_included,
-        whats_excluded: product.whats_excluded,
-        duration: product.duration,
-        wheelchair_access: product.wheelchair_access,
-        smartphone_ticket: product.smartphone_ticket,
-        geolocation_lat: product.geolocation?.lat,
-        geolocation_lng: product.geolocation?.lng,
-        image_alt_text: product.image_alt_text,
-        image_credit: product.image_credit,
-        bestseller: product.promo_label === 'bestseller',
-        url_image: product.images?.[0]?.large,
-        image_alt_text: product.images?.[0]?.alt_text,
-        image_credit: product.images?.[0]?.credit,
-        address: product.venue?.address,
-        postal_code: product.venue?.postal_code,
+        url_image: product.image,
+        image_alt_text: product.title,
       });
       const { productId } = newProduct;
       const newProductTitle = newProduct.productTitle;
       console.log('Inserted product:', newProduct);
     } catch (err) {
-      console.error(
-        `❌ Failed to insert product ${product['Tour ID']}:`,
-        err.message,
-      );
+      console.error(`❌ Failed to insert product ${product.id}:`, err.message);
       // continue with next app
     }
   }
