@@ -1193,53 +1193,55 @@ export const ProductView = () => {
               </div>
             )}
           </div> */}
-          <div className="container-description">
-            <div className="container-title">
+          {product.description && (
+            <div className="container-description">
+              {/* <div className="container-title">
               <h2>{product.title}</h2>
-            </div>
-            {product.summary && (
-              <>
-                <h3>Summary</h3>
-                <p className="product-description main-description">
-                  <Markdown>{product.summary}</Markdown>
-                </p>
-              </>
-            )}
-            {(product.description || product.description_ai) && (
-              <>
-                <h3>Description</h3>
-                {product.description && (
+            </div> */}
+              {product.summary && (
+                <>
+                  <h3>Summary</h3>
                   <p className="product-description main-description">
-                    <Markdown>{product.description}</Markdown>
+                    <Markdown>{product.summary}</Markdown>
                   </p>
-                )}
-                {product.description_ai && (
+                </>
+              )}
+              {product.description && (
+                <>
+                  <h3>Description</h3>
+                  {product.description && (
+                    <p className="product-description main-description">
+                      <Markdown>{product.description}</Markdown>
+                    </p>
+                  )}
+                  {/* {product.description_ai && (
                   <>
                     <h3>AI summary</h3>
                     <p className="product-description main-description">
                       <Markdown>{product.description_ai}</Markdown>
                     </p>
                   </>
-                )}
-              </>
-            )}
-            {product.whats_included && (
-              <>
-                <h3>What is included</h3>
-                <p className="product-description main-description">
-                  <Markdown>{product.whats_included}</Markdown>
-                </p>
-              </>
-            )}
-            {product.whats_excluded && (
-              <>
-                <h3>What is excluded</h3>
-                <p className="product-description main-description">
-                  <Markdown>{product.whats_excluded}</Markdown>
-                </p>
-              </>
-            )}
-          </div>
+                )} */}
+                </>
+              )}
+              {product.whats_included && (
+                <>
+                  <h3>What is included</h3>
+                  <p className="product-description main-description">
+                    <Markdown>{product.whats_included}</Markdown>
+                  </p>
+                </>
+              )}
+              {product.whats_excluded && (
+                <>
+                  <h3>What is excluded</h3>
+                  <p className="product-description main-description">
+                    <Markdown>{product.whats_excluded}</Markdown>
+                  </p>
+                </>
+              )}
+            </div>
+          )}
 
           {/* <div className="container-codes">
             {dealCodes.length > 0 ? (
@@ -1417,10 +1419,10 @@ export const ProductView = () => {
             </div>
           )} */}
           <div className="container-comments">
-            <h2 className="h-no-margin h-no-margin-bottom">Comments</h2>
+            <h2 className="h-no-margin h-no-margin-bottom">Reviews</h2>
             {comments.length === 0 && (
               <div>
-                <i>No comments yet. </i>
+                <i>No reviews yet. </i>
                 {user && <i>Add a first one below.</i>}
               </div>
             )}
@@ -1446,7 +1448,7 @@ export const ProductView = () => {
                   <Link to="/login" className="simple-link">
                     log in
                   </Link>{' '}
-                  to add comments
+                  to add reviews
                 </i>
               </div>
             )}
@@ -1457,7 +1459,7 @@ export const ProductView = () => {
                     <textarea
                       className="form-input textarea-new-comment"
                       value={comment}
-                      placeholder="Your comment..."
+                      placeholder="Your review..."
                       onChange={commentHandler}
                     />
 
@@ -1465,7 +1467,7 @@ export const ProductView = () => {
                       primary
                       className="btn-add-prompt"
                       type="submit"
-                      label="Add comment"
+                      label="Add review"
                     />
                     {validForm && (
                       <Modal
