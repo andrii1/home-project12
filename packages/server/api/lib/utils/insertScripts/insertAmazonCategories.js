@@ -26,7 +26,6 @@ const categories = [
   { title: 'Health & Personal Care', nodeId: '3760931' },
   { title: 'Home & Kitchen', nodeId: '1063498' },
   { title: 'Industrial & Scientific', nodeId: '16310161' },
-  { title: 'Kindle Store', nodeId: '133141011' },
   { title: 'Patio, Lawn & Garden', nodeId: '3238155011' },
   { title: 'Luggage & Travel Gear', nodeId: '9479199011' },
   { title: 'Magazine Subscriptions', nodeId: '599872' },

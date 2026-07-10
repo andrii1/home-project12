@@ -1485,7 +1485,7 @@ export const ProductView = () => {
           {/* <div className="container-details container-badges">
             <h2 className="no-margin">Reviews</h2>
           </div> */}
-          <div className="container-details container-badges">
+          {/* <div className="container-details container-badges">
             <h2 className="no-margin">Additional info</h2>
             {product.duration && (
               <div className="container-tags">
@@ -1543,8 +1543,8 @@ export const ProductView = () => {
                 </div>
               </div>
             )}
-          </div>
-          <div className="container-details container-badges">
+          </div> */}
+          {/* <div className="container-details container-badges">
             <h2 className="no-margin">Location</h2>
             {product.address && (
               <div className="container-tags">
@@ -1626,9 +1626,23 @@ export const ProductView = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="container-details container-badges">
-            <h2 className="no-margin">Category & tags</h2>
+            <h2 className="no-margin">Taxonomy</h2>
+            <div className="container-tags">
+              <div className="badges">
+                <p>Platform: </p>
+                <div>
+                  <Link to={`/products/platforms/${product.platformSlug}`}>
+                    <Button
+                      secondary
+                      label={product.platformTitle?.toLowerCase()}
+                      size="small"
+                    />
+                  </Link>
+                </div>
+              </div>
+            </div>
             <div className="container-tags">
               <div className="badges">
                 <p>Category: </p>

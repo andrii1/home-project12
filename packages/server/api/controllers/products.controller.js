@@ -367,8 +367,11 @@ const getProductById = async (id) => {
         'products.*',
         'categories.title as categoryTitle',
         'categories.slug as categorySlug',
+        'platforms.title as platformTitle',
+        'platforms.slug as platformSlug',
       )
       .join('categories', 'products.category_id', '=', 'categories.id')
+      .join('platforms', 'products.platform_id', '=', 'platforms.id')
       .where({ 'products.slug': id });
     if (product.length === 0) {
       throw new HttpError(`incorrect entry with the id of ${id}`, 404);
