@@ -47,7 +47,7 @@ async function fetchProducts(date) {
 async function fetchAndInsertAllProducts() {
   console.log(products.slice(0, 5));
   // Insert into DB
-  // await insertProducts(products);
+  await insertProducts(products.slice(0, 5));
 }
 
 // Run the script

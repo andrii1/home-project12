@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -1240,6 +1241,14 @@ export const ProductView = () => {
                   </p>
                 </>
               )}
+            </div>
+          )}
+          {product.url_video && (
+            <div className="container-description">
+              <video controls width="600">
+                <source src={product.url_video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           )}
 

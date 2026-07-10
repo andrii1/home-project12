@@ -119,7 +119,7 @@ const insertProducts = async (products) => {
       const existingCategories = await fetchCategories();
       const createdCategory = await createCategoryWithChatGpt(
         existingCategories,
-        product.title,
+        product['Product Desc'],
       );
 
       const newCategory = await insertCategory(createdCategory);
@@ -141,6 +141,7 @@ const insertProducts = async (products) => {
         platform_id: platformId,
         url_image: product['Image Url'],
         image_alt_text: product['Product Desc'],
+        url_video: product['Video Url'],
       });
       const { productId } = newProduct;
       const newProductTitle = newProduct.productTitle;
