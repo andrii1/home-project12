@@ -1,7 +1,14 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-console */
 require('dotenv').config();
 const knex = require('../../../../config/db');
 const generateSlug = require('../generateSlug');
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // make sure this is set in your .env
+});
 
 const categories = [
   { title: 'Appliances', nodeId: '2619526011' },
@@ -72,14 +79,25 @@ async function insertCategories() {
       const baseSlug = generateSlug(category.title);
       const uniqueSlug = await ensureUniqueSlug(baseSlug);
 
-      await knex('categories')
-        .insert({
-          title: category.title,
-          nodeId: category.nodeId,
-          slug: uniqueSlug,
-        })
-        .onConflict('nodeId') // prevent duplicates by nodeId
-        .ignore();
+      const completionMetaDescription = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'user',
+            content: `Write a short, engaging meta description SEO for category "${category.title}". Maximum 150 characters.`,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 3000,
+      });
+      const metaDescription =
+        completionMetaDescription.choices[0].message.content.trim();
+
+      await knex('categories').insert({
+        title: category.title,
+        slug: uniqueSlug,
+        meta_description: metaDescription,
+      });
     }
 
     console.log('Done ✅');

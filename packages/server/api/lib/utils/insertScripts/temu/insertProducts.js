@@ -26,19 +26,12 @@ const openai = new OpenAI({
 //   process.exit(0);
 // }
 
-async function createCategoryWithChatGpt(
-  categories,
-  product,
-  description,
-  summary,
-) {
+async function createCategoryWithChatGpt(categories, product) {
   // Generate a short description using OpenAI
   const prompt = `
 Select the best category for this product.
 
 Product: ${product}
-Description: ${description}
-Summary: ${summary}
 
 Return ONLY ONE category from this list:
 ${categories.join(', ')}
@@ -127,11 +120,9 @@ const insertProducts = async (products) => {
       const createdCategory = await createCategoryWithChatGpt(
         existingCategories,
         product.title,
-        product.summary,
-        product.description,
       );
 
-      const newCategory = await insertCategory(product.category);
+      const newCategory = await insertCategory(createdCategory);
       const { categoryId } = newCategory;
       console.log('Inserted category:', newCategory);
 
