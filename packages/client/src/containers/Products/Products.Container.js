@@ -55,6 +55,7 @@ export const Products = () => {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [highlights, setHighlights] = useState([]);
+  const [platforms, setPlatforms] = useState([]);
   const [userTypes, setUserTypes] = useState([]);
   const [occasions, setOccasions] = useState([]);
   const [useCases, setUseCases] = useState([]);
@@ -78,7 +79,7 @@ export const Products = () => {
   const [listView, setListView] = useState(false);
   const [page, setPage] = useState(0);
   const [counter, setCounter] = useState(0);
-  const [products, setApps] = useState({});
+  const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [orderBy, setOrderBy] = useState({
@@ -198,7 +199,7 @@ export const Products = () => {
         hasMore = false;
       }
 
-      setApps({
+      setProducts({
         data: json.data,
         lastItem: json.lastItem,
         hasMore,
@@ -291,7 +292,7 @@ export const Products = () => {
     const response = await fetch(url);
     const json = await response.json();
 
-    // setApps({ data: json.data, totalCount: json.totalCount, hasMore });
+    // setProducts({ data: json.data, totalCount: json.totalCount, hasMore });
 
     let hasMore = true;
 
@@ -299,7 +300,7 @@ export const Products = () => {
       hasMore = false;
     }
 
-    setApps((prevItems) => {
+    setProducts((prevItems) => {
       return {
         data: [...prevItems.data, ...json.data],
         lastItem: json.lastItem,
@@ -379,6 +380,13 @@ export const Products = () => {
       setTags(sorted);
     }
 
+    async function fetchPlatforms() {
+      const response = await fetch(`${apiURL()}/platforms/`);
+      const data = await response.json();
+      const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
+      setPlatforms(sorted);
+    }
+
     async function fetchHighlights() {
       const response = await fetch(`${apiURL()}/highlights/`);
       const data = await response.json();
@@ -396,6 +404,7 @@ export const Products = () => {
     fetchCategories();
     fetchTags();
     fetchHighlights();
+    fetchPlatforms();
     fetchUseCases();
   }, []);
 
@@ -551,7 +560,7 @@ export const Products = () => {
 
     // ✅ Optional: also reset pagination/products if needed
     // setPage(0);
-    // setApps({ data: [], lastItem: null, hasMore: true });
+    // setProducts({ data: [], lastItem: null, hasMore: true });
   };
 
   const filterHandlerAllCategories = () => {
@@ -857,7 +866,7 @@ export const Products = () => {
       label: 'Platforms',
       values: filteredPlatforms,
       setter: setFilteredPlatforms,
-      options: PLATFORMS_OPTIONS,
+      options: platforms,
     },
     {
       key: 'socials',
@@ -1070,6 +1079,18 @@ export const Products = () => {
       >
         <div className="container-details filters">
           <div className="container-form">
+            <div className="selector-group">
+              <h3>Platforms</h3>
+              <MultiSelectDropdown
+                options={platforms}
+                selected={filteredPlatforms}
+                onChange={filterHandler}
+                placeholder="Select platforms"
+                valueKey="slug"
+                labelKey="title"
+                title="platforms"
+              />
+            </div>
             <div className="selector-group">
               <h3>Highlights</h3>
               <MultiSelectDropdown
