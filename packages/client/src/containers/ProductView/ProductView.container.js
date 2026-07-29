@@ -286,7 +286,9 @@ export const ProductView = () => {
         );
         const data = await response.json();
 
-        const filteredData = data.data.filter((item) => item.id !== product.id);
+        const filteredData = data.data
+          .filter((item) => item.id !== product.id)
+          .slice(0, 5);
 
         setSimilarProducts(filteredData);
       } catch (e) {

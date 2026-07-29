@@ -290,8 +290,8 @@ const getProductsBy = async (params) => {
         .modify((qb) => {
           // --- Simple filters ---
           if (categories) qb.whereIn('categories.slug', categories.split(','));
+          if (platforms) qb.whereIn('platforms.slug', platforms.split(','));
           applyMappedFilter(qb, pricing, pricingFiltersMap);
-          applyMappedFilter(qb, platforms, platformsFiltersMap);
           applyMappedFilter(qb, socials, socialMediaFiltersMap);
           applyMappedFilter(qb, other, otherFiltersMap);
 
