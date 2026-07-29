@@ -2,6 +2,9 @@
 /* eslint-disable no-await-in-loop */
 require('dotenv').config();
 
+console.log('KEY START:', process.env.OPENAI_API_KEY?.slice(0, 15));
+console.log('KEY END:', process.env.OPENAI_API_KEY?.slice(-5));
+
 const insertProducts = require('./insertProducts'); // your DB insert function
 
 const today = new Date();

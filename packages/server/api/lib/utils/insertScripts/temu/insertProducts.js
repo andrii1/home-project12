@@ -2,13 +2,13 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-extraneous-dependencies */
+
 require('dotenv').config();
+const OpenAI = require('openai');
 
 // Credentials (from .env)
 const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_PROD;
 const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_PROD;
-
-const OpenAI = require('openai');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // make sure this is set in your .env
