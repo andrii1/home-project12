@@ -5,8 +5,8 @@
 require('dotenv').config();
 
 // Credentials (from .env)
-const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_LOCAL;
-const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_LOCAL;
+const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_PROD;
+const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_PROD;
 
 const OpenAI = require('openai');
 
