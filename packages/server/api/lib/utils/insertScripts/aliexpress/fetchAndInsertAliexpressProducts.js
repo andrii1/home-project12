@@ -22,7 +22,7 @@ if (!allowedDays.includes(todayDay)) {
 async function fetchAndInsertAllProducts() {
   console.log(products.slice(0, 5));
   // Insert into DB
-  await insertProducts(products.slice(0, 5));
+  await insertProducts(products);
 }
 
 // Run the script
