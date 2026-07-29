@@ -8,7 +8,7 @@ const s3 = new AWS.S3({
 });
 
 const BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME;
-const FOLDER_NAME = 'activities';
+const FOLDER_NAME = 'catchtopdeals';
 
 const getFile = async (fileName) => {
   try {
