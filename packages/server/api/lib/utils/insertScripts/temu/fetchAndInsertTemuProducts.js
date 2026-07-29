@@ -7,7 +7,7 @@ const insertProducts = require('./insertProducts'); // your DB insert function
 const today = new Date();
 const todayDay = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-const allowedDays = [0, 4, 5, 6];
+const allowedDays = [0, 2, 3, 4, 5, 6];
 
 if (!allowedDays.includes(todayDay)) {
   console.log('Not an allowed day, skipping job.');
