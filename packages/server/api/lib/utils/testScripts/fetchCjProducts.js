@@ -1,16 +1,22 @@
+/* eslint-disable no-await-in-loop */
 require('dotenv').config();
 
 const { CJ_TOKEN } = process.env;
 
-async function fetchProducts(partnerId, page = null) {
+const partners = [
+  '5357356', // Rexing
+];
+
+async function fetchProducts(partnerIds, page = null) {
   const pageArg = page ? `, page: "${page}"` : '';
 
   const query = `
     query {
       products(
         companyId: "7802776",
-        partnerIds: [${partnerId}],
+        partnerIds: ${JSON.stringify(partnerIds)},
         limit: 2
+        availability: IN_STOCK
         ${pageArg}
       ) {
         resultList {
@@ -54,12 +60,12 @@ async function fetchProducts(partnerId, page = null) {
   return data.data.products;
 }
 
-async function fetchAllProducts(partnerId) {
+async function fetchAllProducts(partnerIds) {
   let allProducts = [];
   let nextPage = null;
 
   do {
-    const result = await fetchProducts(partnerId, nextPage);
+    const result = await fetchProducts(partnerIds, nextPage);
 
     allProducts.push(...result.resultList);
 
@@ -76,7 +82,7 @@ async function fetchAllProducts(partnerId) {
 
   // console.log(`Finished: ${products.length} products`);
 
-  const productsSmall = await fetchProducts('5357356');
+  const productsSmall = await fetchProducts(partners);
 
   console.log(JSON.stringify(productsSmall.resultList, null, 2));
 })();
