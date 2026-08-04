@@ -5,11 +5,6 @@ const knex = require('../../config/db');
 const HttpError = require('../lib/utils/http-error');
 const generateSlug = require('../lib/utils/generateSlug');
 const { normalizeUrl } = require('../lib/utils/normalizeUrl');
-const OpenAI = require('openai');
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // make sure this is set in your .env
-});
 
 const getMerchants = async () => {
   try {
@@ -32,7 +27,7 @@ const createMerchant = async (token, body) => {
       throw new HttpError('User not found', 401);
     }
 
-    // Optional: check for existing merchant
+    // Check for existing merchant
 
     const slug = generateSlug(body.title);
     const existing = await knex('merchants')
@@ -49,47 +44,14 @@ const createMerchant = async (token, body) => {
       };
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'user',
-          content: `Write a short, engaging description for "${body.title}"${
-            body.url ? ` with link ${body.url}` : ''
-          }.`,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 3000,
-    });
-    const description = completion.choices[0].message.content.trim();
-
-    const completionMetaDescription = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'user',
-          content: `Write a short, engaging meta description SEO for "${
-            body.title
-          }"${
-            body.url ? ` with link ${body.url}` : ''
-          }. Maximum 150 characters.`,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 3000,
-    });
-    const metaDescription =
-      completionMetaDescription.choices[0].message.content.trim();
-
     const normalizedUrl = body.url ? normalizeUrl(body.url) : null;
 
     const insertData = {
       title: body.title,
+      external_id: body.external_id,
+      platform_id_id: body.platform_id,
       slug,
       url: normalizedUrl,
-      description,
-      meta_description: metaDescription,
     };
 
     const [merchantId] = await knex('merchants').insert(insertData);
