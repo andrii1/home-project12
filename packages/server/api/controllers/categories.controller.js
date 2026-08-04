@@ -5,28 +5,6 @@ const knex = require('../../config/db');
 const HttpError = require('../lib/utils/http-error');
 const generateSlug = require('../lib/utils/generateSlug');
 
-// Helper: ensure the slug is unique by checking the DB
-async function ensureUniqueSlug(baseSlug) {
-  let slug = baseSlug;
-  let counter = 1;
-
-  // eslint-disable-next-line no-await-in-loop
-  while (await slugExists(slug)) {
-    const suffix = `-${counter}`;
-    const maxBaseLength = 200 - suffix.length;
-    slug = `${baseSlug.slice(0, maxBaseLength)}${suffix}`;
-    counter += 1;
-  }
-
-  return slug;
-}
-
-// Helper: check if a slug already exists in the database
-async function slugExists(slug) {
-  const existing = await knex('categories').where({ slug }).first();
-  return !!existing;
-}
-
 const getCategories = async () => {
   try {
     const categories = await knex('categories')
@@ -47,9 +25,9 @@ const createCategory = async (token, body) => {
     }
 
     // Optional: check for existing category
-    const existing = await knex('categories')
-      .whereRaw('LOWER(title) = ?', [body.title.toLowerCase()])
-      .first();
+
+    const slug = generateSlug(body.title);
+    const existing = await knex('categories').where({ slug }).first();
 
     if (existing) {
       return {
@@ -60,12 +38,9 @@ const createCategory = async (token, body) => {
       };
     }
 
-    const baseSlug = generateSlug(body.title);
-    const uniqueSlug = await ensureUniqueSlug(baseSlug);
-
     const insertData = {
       title: body.title,
-      slug: uniqueSlug,
+      slug,
     };
 
     const [categoryId] = await knex('categories').insert(insertData);

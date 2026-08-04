@@ -11,42 +11,20 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // make sure this is set in your .env
 });
 
-// Helper: ensure the slug is unique by checking the DB
-async function ensureUniqueSlug(baseSlug) {
-  let slug = baseSlug;
-  let counter = 1;
-
-  // eslint-disable-next-line no-await-in-loop
-  while (await slugExists(slug)) {
-    const suffix = `-${counter}`;
-    const maxBaseLength = 200 - suffix.length;
-    slug = `${baseSlug.slice(0, maxBaseLength)}${suffix}`;
-    counter += 1;
-  }
-
-  return slug;
-}
-
-// Helper: check if a slug already exists in the database
-async function slugExists(slug) {
-  const existing = await knex('platforms').where({ slug }).first();
-  return !!existing;
-}
-
-const getPlatforms = async () => {
+const getBrands = async () => {
   try {
-    const platforms = await knex('platforms')
-      .select('platforms.*')
-      .distinct('platforms.id')
-      .join('products', 'products.platform_id', '=', 'platforms.id')
-      .orderBy('platforms.title');
-    return platforms;
+    const brands = await knex('brands')
+      .select('brands.*')
+      .distinct('brands.id')
+      .join('products', 'products.brand_id', '=', 'brands.id')
+      .orderBy('brands.title');
+    return brands;
   } catch (error) {
     return error.message;
   }
 };
 
-const createPlatform = async (token, body) => {
+const createBrand = async (token, body) => {
   try {
     const userUid = token.split(' ')[1];
     const user = (await knex('users').where({ uid: userUid }))[0];
@@ -54,16 +32,16 @@ const createPlatform = async (token, body) => {
       throw new HttpError('User not found', 401);
     }
 
-    // Optional: check for existing platform
+    // Optional: check for existing brand
     const slug = generateSlug(body.title);
-    const existing = await knex('platforms').where({ slug }).first();
+    const existing = await knex('brands').where({ slug }).first();
 
     if (existing) {
       return {
         successful: true,
         existing: true,
-        platformId: existing.id,
-        platformTitle: body.title,
+        brandId: existing.id,
+        brandTitle: body.title,
       };
     }
 
@@ -110,12 +88,12 @@ const createPlatform = async (token, body) => {
       meta_description: metaDescription,
     };
 
-    const [platformId] = await knex('platforms').insert(insertData);
+    const [brandId] = await knex('brands').insert(insertData);
 
     return {
       successful: true,
-      platformId,
-      platformTitle: body.title,
+      brandId,
+      brandTitle: body.title,
     };
   } catch (error) {
     return error.message;
@@ -123,6 +101,6 @@ const createPlatform = async (token, body) => {
 };
 
 module.exports = {
-  getPlatforms,
-  createPlatform,
+  getBrands,
+  createBrand,
 };
