@@ -40,12 +40,9 @@ const createBrand = async (token, body) => {
       };
     }
 
-    const normalizedUrl = body.url ? normalizeUrl(body.url) : null;
-
     const insertData = {
       title: body.title,
       slug,
-      url: normalizedUrl,
       logo_url: body.logo_url,
     };
 

@@ -5,8 +5,8 @@
 require('dotenv').config();
 
 // Credentials (from .env)
-const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_PROD;
-const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_PROD;
+const USER_UID = process.env.USER_UID_CATCH_TOP_DEALS_LOCAL;
+const API_PATH = process.env.API_PATH_CATCH_TOP_DEALS_LOCAL;
 
 const OpenAI = require('openai');
 
@@ -70,6 +70,36 @@ async function insertPlatform(title, url) {
   return data; // assume it returns { id, full_name }
 }
 
+async function insertBrand(title) {
+  const res = await fetch(`${API_PATH}/brands`, {
+    method: 'POST',
+    headers: {
+      token: `token ${USER_UID}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title }),
+  });
+  const data = await res.json();
+  return data; // assume it returns { id, full_name }
+}
+
+async function insertMerchant(title, merchantId, platformId) {
+  const res = await fetch(`${API_PATH}/platforms`, {
+    method: 'POST',
+    headers: {
+      token: `token ${USER_UID}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title,
+      external_id: merchantId,
+      platform_id: platformId,
+    }),
+  });
+  const data = await res.json();
+  return data; // assume it returns { id, full_name }
+}
+
 async function insertCategory(title) {
   const res = await fetch(`${API_PATH}/categories`, {
     method: 'POST',
@@ -98,41 +128,59 @@ async function insertProduct(product) {
 }
 
 const insertProducts = async (products) => {
+  const platform = 'CJ';
+  const platformUrl = 'http://www.cj.com/';
+
+  const newPlatform = await insertPlatform(platform, platformUrl);
+  const { platformId } = newPlatform;
+  console.log('Inserted platform:', newPlatform);
+
   for (const product of products) {
     try {
-      const platform = 'CJ';
-      const platformUrl = 'http://www.cj.com/';
+      const newBrand = await insertBrand(product.brand);
+      const { brandId } = newBrand;
+      console.log('Inserted brand:', newBrand);
 
-      const newPlatform = await insertPlatform(platform, platformUrl);
-      const { platformId } = newPlatform;
-      console.log('Inserted platform:', newPlatform);
+      const newMerchant = await insertMerchant(
+        product.merchant.title,
+        product.merchant.external_id,
+        platformId,
+      );
+      const { merchantId } = newMerchant;
+      console.log('Inserted merchant:', newMerchant);
 
       const existingCategories = await fetchCategories();
       const createdCategory = await createCategoryWithChatGpt(
         existingCategories,
-        product['Product Desc'],
+        product.description,
       );
 
       const newCategory = await insertCategory(createdCategory);
       const { categoryId } = newCategory;
       console.log('Inserted category:', newCategory);
 
-      const price = Number(product['Discount Price'].split(' ')[1]);
-
-      const discount = Number(product.Discount.replace('%', ''));
-
       const newProduct = await insertProduct({
-        title: product['Product Desc'],
-        external_id: product.ProductId,
-        price,
-        currency: product.Currency,
-        discount_percentage: discount,
-        url_affiliate: product['Promotion Url'],
+        external_id: product.external_id,
+
+        title: product.title,
+
+        description: product.description,
+
         category_id: categoryId,
         platform_id: platformId,
-        url_image: product['Image Url'],
-        image_alt_text: product['Product Desc'],
-        url_video: product['Video Url'],
+        brand_id: brandId,
+        merchant_id: merchantId,
+
+        url: product.url,
+        url_affiliate: product.url_affiliate,
+        url_image: product.url_image,
+
+        price: product.price,
+        currency: product.currency,
+
+        discount_percentage: product.discount_percentage,
+
+        status: product.status,
       });
       const { productId } = newProduct;
       const newProductTitle = newProduct.productTitle;

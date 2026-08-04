@@ -3,6 +3,8 @@ require('dotenv').config();
 
 const { CJ_TOKEN } = process.env;
 
+const insertProducts = require('./insertProducts');
+
 const partners = [
   '5357356', // Rexing
 ];
@@ -10,49 +12,43 @@ const partners = [
 async function fetchProducts(partnerIds, page = null) {
   const pageArg = page ? `, page: "${page}"` : '';
 
-  const query = `{
-  __type(name: "Product") {
-    fields {
-      name
+  const query = `
+    query {
+      products(
+        companyId: "7802776",
+        partnerIds: ${JSON.stringify(partnerIds)},
+        limit: 5,
+        availability: IN_STOCK,
+        ${pageArg}
+      ) {
+        resultList {
+          id
+          title
+          description
+          advertiserId
+          advertiserName
+          brand
+          imageLink
+          link
+          linkCode(pid: "101851090") {
+            clickUrl
+          }
+          price {
+            amount
+            currency
+          }
+          salePrice {
+            amount
+            currency
+          }
+          discountPercentage
+        }
+        totalCount
+        count
+        nextPage
+      }
     }
-  }
-}`;
-
-  // const query = `
-  //   query {
-  //     products(
-  //       companyId: "7802776",
-  //       partnerIds: ${JSON.stringify(partnerIds)},
-  //       limit: 2,
-  //       availability: IN_STOCK,
-  //       ${pageArg}
-  //     ) {
-  //       resultList {
-  //         id
-  //         title
-  //         description
-  //         brand
-  //         imageLink
-  //         link
-  //         linkCode(pid: "101851090") {
-  //           clickUrl
-  //         }
-  //         price {
-  //           amount
-  //           currency
-  //         }
-  //         salePrice {
-  //           amount
-  //           currency
-  //         }
-  //         discountPercentage
-  //       }
-  //       totalCount
-  //       count
-  //       nextPage
-  //     }
-  //   }
-  // `;
+  `;
 
   const response = await fetch('https://ads.api.cj.com/query', {
     method: 'POST',
@@ -62,6 +58,11 @@ async function fetchProducts(partnerIds, page = null) {
     },
     body: JSON.stringify({ query }),
   });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`${response.status}: ${text}`);
+  }
 
   const data = await response.json();
 
@@ -114,7 +115,7 @@ function mapCJProducts(products) {
   }));
 }
 
-(async () => {
+async function fetchAndInsertAllProducts() {
   // const products = await fetchAllProducts();
 
   //  const mappedProducts = mapCJProducts(products);
@@ -127,4 +128,8 @@ function mapCJProducts(products) {
   const mappedProductsSmall = mapCJProducts(productsSmall.resultList);
 
   console.log(JSON.stringify(mappedProductsSmall, null, 2));
-})();
+
+  await insertProducts(mappedProductsSmall);
+}
+
+fetchAndInsertAllProducts();
