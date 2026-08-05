@@ -1655,6 +1655,18 @@ export const ProductView = () => {
                   </Link>
                 </div>
               </div>
+              {product.brandTitle && (
+                <div className="badges">
+                  <p>Brand: </p>
+                  <div>{product.brandTitle}</div>
+                </div>
+              )}
+              {product.merchantTitle && (
+                <div className="badges">
+                  <p>Merchant: </p>
+                  <div>{product.merchantTitle}</div>
+                </div>
+              )}
             </div>
             <div className="container-tags">
               <div className="badges">

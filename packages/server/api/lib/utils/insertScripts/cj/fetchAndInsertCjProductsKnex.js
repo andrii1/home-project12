@@ -7,7 +7,7 @@ const insertProducts = require('./insertProductsKnex');
 
 const partners = [
   '5357356', // Rexing
-  // '7889430',
+  '7889430', // Abracadabra NYC
 ];
 
 async function fetchProducts(partnerIds, page = null) {

@@ -10,49 +10,49 @@ const partners = [
 async function fetchProducts(partnerIds, page = null) {
   const pageArg = page ? `, page: "${page}"` : '';
 
-  const query = `{
-  __type(name: "Product") {
-    fields {
-      name
-    }
-  }
-}`;
-
-  // const query = `
-  //   query {
-  //     products(
-  //       companyId: "7802776",
-  //       partnerIds: ${JSON.stringify(partnerIds)},
-  //       limit: 2,
-  //       availability: IN_STOCK,
-  //       ${pageArg}
-  //     ) {
-  //       resultList {
-  //         id
-  //         title
-  //         description
-  //         brand
-  //         imageLink
-  //         link
-  //         linkCode(pid: "101851090") {
-  //           clickUrl
-  //         }
-  //         price {
-  //           amount
-  //           currency
-  //         }
-  //         salePrice {
-  //           amount
-  //           currency
-  //         }
-  //         discountPercentage
-  //       }
-  //       totalCount
-  //       count
-  //       nextPage
+  //   const query = `{
+  //   __type(name: "Product") {
+  //     fields {
+  //       name
   //     }
   //   }
-  // `;
+  // }`;
+
+  const query = `
+    query {
+      products(
+        companyId: "7802776",
+        partnerIds: ${JSON.stringify(partnerIds)},
+        limit: 2,
+        availability: IN_STOCK,
+        ${pageArg}
+      ) {
+        resultList {
+          id
+          title
+          description
+          brand
+          imageLink
+          link
+          linkCode(pid: "101851090") {
+            clickUrl
+          }
+          price {
+            amount
+            currency
+          }
+          salePrice {
+            amount
+            currency
+          }
+          discountPercentage
+        }
+        totalCount
+        count
+        nextPage
+      }
+    }
+  `;
 
   const response = await fetch('https://ads.api.cj.com/query', {
     method: 'POST',
