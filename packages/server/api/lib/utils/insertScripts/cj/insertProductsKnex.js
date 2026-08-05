@@ -185,7 +185,10 @@ async function createTags(product) {
         content: `Create 3-5 niche long tail tags for:
 ${product.title}
 
-Return only comma separated tags`,
+Return only comma separated tags.
+Do not use numbers.
+Do not use bullet points.
+Do not add explanations.`,
       },
     ],
     temperature: 0.7,
@@ -193,7 +196,7 @@ Return only comma separated tags`,
 
   const tags = response.choices[0].message.content
     .split(',')
-    .map((x) => x.trim())
+    .map((x) => x.replace(/^\d+[\.\)]\s*/, '').trim())
     .filter(Boolean);
 
   const ids = [];
@@ -218,7 +221,10 @@ async function createItems(product, table, type) {
 
 ${product.title}
 
-Return only comma separated values.`,
+Return ONLY comma separated values.
+Do not use numbers.
+Do not use bullet points.
+Do not add explanations.`,
       },
     ],
 
@@ -227,7 +233,7 @@ Return only comma separated values.`,
 
   const items = response.choices[0].message.content
     .split(',')
-    .map((x) => x.trim())
+    .map((x) => x.replace(/^\d+[\.\)]\s*/, '').trim())
     .filter(Boolean);
 
   const ids = [];
