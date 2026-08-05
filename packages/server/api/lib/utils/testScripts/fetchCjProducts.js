@@ -4,7 +4,8 @@ require('dotenv').config();
 const { CJ_TOKEN } = process.env;
 
 const partners = [
-  '5357356', // Rexing
+  // '5357356', // Rexing
+  '7889430', // Abracadabra NYC
 ];
 
 async function fetchProducts(partnerIds, page = null) {
@@ -65,6 +66,8 @@ async function fetchProducts(partnerIds, page = null) {
 
   const data = await response.json();
 
+  console.log(JSON.stringify(data, null, 2));
+
   return data.data.products;
 }
 
@@ -115,16 +118,18 @@ function mapCJProducts(products) {
 }
 
 (async () => {
-  // const products = await fetchAllProducts();
+  // const products = await fetchAllProducts(partners);
 
-  //  const mappedProducts = mapCJProducts(products);
+  // const mappedProducts = mapCJProducts(products);
 
   // console.log(`Finished: ${products.length} products`);
+
+  //  await insertProducts(mappedProducts);
 
   const productsSmall = await fetchProducts(partners);
   console.log(productsSmall);
 
-  const mappedProductsSmall = mapCJProducts(productsSmall.resultList);
+  // const mappedProductsSmall = mapCJProducts(productsSmall.resultList);
 
-  console.log(JSON.stringify(mappedProductsSmall, null, 2));
+  // console.log(JSON.stringify(mappedProductsSmall, null, 2));
 })();

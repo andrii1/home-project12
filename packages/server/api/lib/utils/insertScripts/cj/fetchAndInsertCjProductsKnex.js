@@ -10,17 +10,17 @@ const partners = [
   '7889430', // Abracadabra NYC
 ];
 
-async function fetchProducts(partnerIds, page = null) {
-  const pageArg = page ? `, page: "${page}"` : '';
-
+async function fetchProducts(partnerIds, offset = 0) {
   const query = `
     query {
       products(
         companyId: "7802776",
         partnerIds: ${JSON.stringify(partnerIds)},
         limit: 100,
+        offset: ${offset},
         availability: IN_STOCK,
-        ${pageArg}
+        sortBy: LAST_UPDATED,
+        sortOrder: DESC
       ) {
         resultList {
           id
@@ -46,7 +46,6 @@ async function fetchProducts(partnerIds, page = null) {
         }
         totalCount
         count
-        nextPage
       }
     }
   `;
@@ -72,19 +71,23 @@ async function fetchProducts(partnerIds, page = null) {
 
 async function fetchAllProducts(partnerIds) {
   let allProducts = [];
-  let nextPage = null;
+  let offset = 0;
 
-  do {
-    const result = await fetchProducts(partnerIds, nextPage);
+  while (allProducts.length < 300) {
+    const result = await fetchProducts(partnerIds, offset);
 
     allProducts.push(...result.resultList);
 
     console.log(`Fetched ${allProducts.length}/${result.totalCount}`);
 
-    nextPage = result.nextPage;
-  } while (nextPage);
+    if (result.resultList.length < 100) {
+      break;
+    }
 
-  return allProducts;
+    offset += 100;
+  }
+
+  return allProducts.slice(0, 300);
 }
 
 function mapCJProducts(products) {
@@ -116,23 +119,43 @@ function mapCJProducts(products) {
   }));
 }
 
+// async function fetchAndInsertAllProducts() {
+//   const products = await fetchAllProducts(partners);
+
+//   const mappedProducts = mapCJProducts(products);
+
+//   console.log(`Finished: ${products.length} products`);
+
+//   await insertProducts(mappedProducts);
+
+//   // const productsSmall = await fetchProducts(partners);
+//   // console.log(productsSmall);
+
+//   // const mappedProductsSmall = mapCJProducts(productsSmall.resultList);
+
+//   // console.log(JSON.stringify(mappedProductsSmall, null, 2));
+
+//   // await insertProducts(mappedProductsSmall);
+// }
+
 async function fetchAndInsertAllProducts() {
-  const products = await fetchAllProducts(partners);
+  let allProducts = [];
 
-  const mappedProducts = mapCJProducts(products);
+  for (const partner of partners) {
+    console.log(`Fetching partner ${partner}`);
 
-  console.log(`Finished: ${products.length} products`);
+    const products = await fetchAllProducts([partner]);
+
+    console.log(`Partner ${partner}: ${products.length} products`);
+
+    allProducts.push(...products);
+  }
+
+  const mappedProducts = mapCJProducts(allProducts);
+
+  console.log(`Total products: ${mappedProducts.length}`);
 
   await insertProducts(mappedProducts);
-
-  // const productsSmall = await fetchProducts(partners);
-  // console.log(productsSmall);
-
-  // const mappedProductsSmall = mapCJProducts(productsSmall.resultList);
-
-  // console.log(JSON.stringify(mappedProductsSmall, null, 2));
-
-  // await insertProducts(mappedProductsSmall);
 }
 
 fetchAndInsertAllProducts();
