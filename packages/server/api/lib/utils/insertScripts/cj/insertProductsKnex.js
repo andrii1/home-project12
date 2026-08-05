@@ -196,7 +196,7 @@ Do not add explanations.`,
 
   const tags = response.choices[0].message.content
     .split(',')
-    .map((x) => x.replace(/^\d+[\.\)]\s*/, '').trim())
+    .map((x) => x.replace(/^\d+[.)]\s*/, '').trim())
     .filter(Boolean);
 
   const ids = [];
@@ -233,7 +233,7 @@ Do not add explanations.`,
 
   const items = response.choices[0].message.content
     .split(',')
-    .map((x) => x.replace(/^\d+[\.\)]\s*/, '').trim())
+    .map((x) => x.replace(/^\d+[.)]\s*/, '').trim())
     .filter(Boolean);
 
   const ids = [];
